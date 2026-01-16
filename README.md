@@ -83,7 +83,7 @@ This is an open-source project, and contributions are welcome! Feel free to open
 
 ### ✨ Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=ishandutta2007/open-reasoning&type=date&legend=top-left)](https://www.star-history.com/#ishandutta2007/open-reasoning&type=date&legend=top-left)
+[![Star History Chart](https://api.star-history.com/svg?repos=ishandutta2007/open-tunneling&type=date&legend=top-left)](https://www.star-history.com/#ishandutta2007/open-tunneling&type=date&legend=top-left)
 
 
 ### 💬 Community & Support
