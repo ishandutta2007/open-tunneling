@@ -1,109 +1,144 @@
-<h1 align="center">
-  <br>
-  <samp><b>✧ Open Tunnel ✧</b></samp>
-  <br>
-</h1>
+# 🚀 Open Tunnel
 
-<p align="center">
-  <samp>Your Open-Source Gateway to Local Services.</samp>
-</p>
+**A Powerful, Open-Source Gateway for Secure Public Access to Local Services.**
 
-<p align="center">
-  <img src="https://img.shields.io/badge/status-alpha-yellow.svg" alt="Status">
-  <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
-</p>
+[![GitHub stars](https://img.shields.io/github/stars/ishandutta2007/open-tunneling.svg?style=flat-square)](https://github.com/ishandutta2007/open-tunneling/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/ishandutta2007/open-tunneling.svg?style=flat-square)](https://github.com/ishandutta2007/open-tunneling/network)
+[![GitHub issues](https://img.shields.io/github/issues/ishandutta2007/open-tunneling.svg?style=flat-square)](https://github.com/ishandutta2007/open-tunneling/issues)
+[![GitHub license](https://img.shields.io/github/license/ishandutta2007/open-tunneling.svg?style=flat-square)](https://github.com/ishandutta2007/open-tunneling/blob/main/LICENSE)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/ishandutta2007/open-tunneling/graphs/commit-activity)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 ---
 
-<samp>
+**Open Tunnel** is a free and open-source alternative to services like **ngrok**, **Cloudflare Tunnel**, and **Tailscale**. It allows you to expose your local development environment to the public internet securely and efficiently. Whether you're testing webhooks, sharing a demo, or hosting a temporary service, Open Tunnel has you covered.
 
-**Open Tunnel** is a free and open-source alternative to services like ngrok, Cloudflare Tunnel, and Tailscale. It provides a secure tunnel from a public endpoint to a service running on your local machine. Expose your local web servers, development environments, or any TCP service to the internet with a simple command.
+## 📖 Table of Contents
 
-This project is in its early stages, providing a basic but functional TCP tunnel.
+- [✨ Features](#-features)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [⚙️ How It Works](#️-how-it-works)
+- [🚀 Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Usage](#usage)
+- [🤝 Contributing](#-contributing)
+- [💬 Community & Support](#-community--support)
+- [💖 Support & Sponsorship](#-support--sponsorship)
+- [🛡️ Security](#️-security)
+- [📄 License](#-license)
+
+---
 
 ## ✨ Features
 
-*   **Secure TCP Tunneling:** Forward any TCP-based service (HTTP, SSH, etc.) from your local machine.
-*   **Self-Hostable:** You have full control. Run the server component on your own VPS or cloud instance.
-*   **Lightweight & Simple:** No complex setup. Just a client and a server.
-*   **Cross-Platform:** (Goal) Binaries for all major operating systems.
+- 🔒 **Secure Tunneling:** Create encrypted channels between your local machine and the public internet.
+- 🏠 **Self-Hostable:** Run the server component on your own infrastructure for maximum privacy.
+- ⚡ **Lightweight:** Built with performance in mind using Node.js and TypeScript.
+- 🌐 **HTTP & TCP Support:** Forward any traffic, from simple web servers to complex SSH connections.
+- 🛠️ **Developer Friendly:** Simple CLI-like interface for easy integration into your workflow.
+
+## 🛠️ Tech Stack
+
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Runtime:** [Node.js](https://nodejs.org/)
+- **Networking:** Native `net` module for high-performance TCP socket management.
 
 ## ⚙️ How It Works
 
-The architecture is simple: a client and a server work together to bridge a public port to a local port.
+The architecture involves two primary components: the **Server** and the **Client**.
 
-```
-+-----------------+      +---------------------+      +----------------------+      +--------------------+
-| Public Internet |  ->  | Your VPS / Server   |  ->  | Your Local Machine   |  ->  | Your Local Service |
-| (e.g., Browser) |      | [Open Tunnel Server]|      | [Open Tunnel Client] |      | (e.g., Port 3000)  |
-+-----------------+      +---------------------+      +----------------------+      +--------------------+
-        |                        | (Public Port)         |  (Secure Tunnel)     |                        |
-        +------------------------+-----------------------+----------------------+------------------------+
+```mermaid
+graph LR
+    A[Public User] --> B(Public Port: 8080)
+    subgraph "Public Server (VPS)"
+    B --> C{Open Tunnel Server}
+    end
+    C <--> D(Tunnel Port: 9090)
+    subgraph "Local Environment"
+    D <--> E{Open Tunnel Client}
+    E <--> F(Local Service: 3000)
+    end
 ```
 
-1.  The **Open Tunnel Server** runs on a machine with a public IP address. It listens on two ports: a public port that will receive internet traffic and a tunnel port for the client to connect to.
-2.  The **Open Tunnel Client** runs on your local machine. It connects to the server's tunnel port, creating a persistent, secure connection.
-3.  When a request hits the server's public port, the server sends that traffic through the tunnel to the client.
-4.  The client forwards the traffic to the specified local service. The response travels back the same way.
+1.  **Server:** Runs on a machine with a static public IP. It listens for incoming public requests and client tunnel connections.
+2.  **Client:** Runs locally, connects to the server, and bridges the gap to your local service.
+
+---
 
 ## 🚀 Getting Started
 
-*(Instructions will be updated as the project progresses)*
-
 ### Prerequisites
 
-*   A server (VPS, cloud instance) with a public IP address.
-*   Go (for building from source) or pre-built binaries (coming soon).
+- **Node.js** (v18 or higher recommended)
+- **npm** or **yarn**
+- A server with a public IP (for production use)
 
-### Running the Server
+### Installation
 
-1.  SSH into your server.
-2.  Run the server component, specifying the public-facing port and the port for the client tunnel.
+Clone the repository and install the dependencies:
 
-    ```bash
-    # Example
-    ./server -public :8080 -tunnel :9090
-    ```
+```bash
+git clone https://github.com/ishandutta2007/open-tunneling.git
+cd open-tunneling
+npm install
+```
 
-### Running the Client
+### Usage
 
-1.  On your local machine, run the client component.
-2.  Point it to your server's tunnel address and specify the local port your service is running on.
+#### 1. Start the Server
+Deploy this on your public server:
+```bash
+npm run start:server
+```
 
-    ```bash
-    # Example: Forward to a local service on port 3000
-    ./client -server your-server-ip:9090 -local localhost:3000
-    ```
+#### 2. Start the Client
+Run this on your local machine:
+```bash
+npm run start:client
+```
 
-Now, any traffic sent to `your-server-ip:8080` will be forwarded to `localhost:3000` on your machine!
+*Note: Edit `src/client.ts` to point `SERVER_HOST` to your server's IP address.*
+
+---
 
 ## 🤝 Contributing
 
-This is an open-source project, and contributions are welcome! Feel free to open issues for bugs and feature requests, or submit a pull request.
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ### ✨ Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=ishandutta2007/open-tunneling&type=date&legend=top-left)](https://www.star-history.com/#ishandutta2007/open-tunneling&type=date&legend=top-left)
 
-
 ### 💬 Community & Support
 
--   **📚 [Documentation](https://docs.open-workflows.com):** Check out our official documentation for detailed guides and tutorials.
--   **🗣️ [Forum](https://community.open-workflows.com):** Join our community forum to ask questions, share your projects, and connect with other users.
--   **💬 [Discord](https://discord.com/invite/jc4xtF58Ve):** Chat with us on Discord for real-time support and discussions.
--   **🐦 [Twitter](https://twitter.com/ishandutta2007):** Follow us on Twitter for the latest news and updates.
--   **🐦 [Github](https://github.com/ishandutta2007):** Follow me on Github for the latest commits and updates.
+-   **🗣️ [Forum](https://community.open-workflows.com):** Join our community forum to ask questions and share projects.
+-   **💬 [Discord](https://discord.com/invite/jc4xtF58Ve):** Chat with us on Discord for real-time support.
+-   **🐦 [Twitter](https://twitter.com/ishandutta2007):** Follow us on Twitter for the latest news.
+-   **🐙 [Github](https://github.com/ishandutta2007):** Follow for the latest commits and updates.
 
 ## 💖 Support & Sponsorship
 
-If you find this project helpful or if it has saved you time and resources, please consider sponsoring the development. Your support helps maintain the project, develop new features, and keep the initiative open-source.
+If you find this project helpful, please consider sponsoring the development. Your support helps maintain the project and develop new features.
 
 **[Sponsor @ishandutta2007 on GitHub](https://github.com/sponsors/ishandutta2007)**
 
-Every contribution, no matter how small, makes a huge difference!
+## 🛡️ Security
+
+Security is a top priority. Please report security vulnerabilities via email to [security@yourdomain.com](mailto:security@yourdomain.com).
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+Distributed under the MIT License. See `LICENSE` for more information.
 
-</samp>
+---
+
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/ishandutta2007">Ishan Dutta</a>
+</p>
